@@ -63,7 +63,16 @@ Diving into `weave` is straightforward and familiar if you've worked with Node.j
 
 ## Installation
 
-Still gotta put up on NPM :)
+This is a work in progress & I still gotta put up on NPM :)
+
+If this repo has been shared with you, the intended use for you is to use it as a code playground for now.
+
+Steps: 
+1. Make sure you have bun installed & working: https://bun.sh/docs
+2. clone this repo
+3. Go into root
+4. `bun index.tsx` using `bun` runtime
+5. It will place the results in console.
 
 ## Basic Usage
 
