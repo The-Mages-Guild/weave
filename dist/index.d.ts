@@ -96,9 +96,7 @@ declare module "src/lib/index" {
     export { Text, Markdown, System, User, Assistant, getMessageRole, getMessages, ToolBox, Tool, findAllToolBoxes, getToolBox } from "src/lib/core/index";
     export { OpenAI } from "src/lib/openai/index";
 }
-declare module "src/example/index" {
-    export const main: () => Promise<void>;
-}
+declare module "src/example/index" { }
 declare module "src/lib/core/dumb-character-count" {
     interface IDumbCharacterCount {
         limit?: number;

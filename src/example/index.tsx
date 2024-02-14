@@ -7,7 +7,7 @@ import { OpenAI } from '../lib/openai';
 import { Assistant, System, User } from '../lib/core';
 import { Text } from '../lib/core/text';
 
-export const main = async () => {
+const main = async () => {
 
   
   type WEATHER = {}

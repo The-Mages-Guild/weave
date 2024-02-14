@@ -307,7 +307,6 @@ define("src/lib/index", ["require", "exports", "src/lib/execute", "src/lib/utils
 define("src/example/index", ["require", "exports", "react/jsx-runtime", "src/lib/core/index", "src/lib/index", "src/lib/openai/service/index", "src/lib/openai/index", "src/lib/core/index", "src/lib/core/text"], function (require, exports, jsx_runtime_6, core_3, lib_1, service_2, openai_4, core_4, text_4) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.main = void 0;
     const main = async () => {
         const [content, toolResult] = await (0, lib_1.execute)((0, jsx_runtime_6.jsx)(openai_4.OpenAI.ChatCompletions, { model: service_2.ChatModelsEnum.GPT_3P5_TURBO_0125, responseFormat: service_2.ChatResponseFormatEnum.JSON, apiKey: process.env.OPENAI_KEY, children: (0, jsx_runtime_6.jsxs)(openai_4.OpenAI.Messages, { children: [(0, jsx_runtime_6.jsx)(core_4.System, { children: (0, jsx_runtime_6.jsx)(core_3.ToolBox, { children: (0, jsx_runtime_6.jsx)(core_3.Tool, { toolName: "Fetch Weather Data", trigger: "for when you need to fetch real-time weather data", command: "FETCH_WEATHER_DATA", params: { city: "string" }, execute: async ({ city }) => {
                                     try {
@@ -327,8 +326,7 @@ define("src/example/index", ["require", "exports", "react/jsx-runtime", "src/lib
         console.log('content', content);
         console.log('result', toolResult.data);
     };
-    exports.main = main;
-    (0, exports.main)();
+    main();
 });
 define("src/lib/core/dumb-character-count", ["require", "exports", "react/jsx-runtime"], function (require, exports, jsx_runtime_7) {
     "use strict";
