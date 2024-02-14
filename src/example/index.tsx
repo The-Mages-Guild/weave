@@ -78,3 +78,5 @@ const [content, toolResult] = await execute<ToolBox>(
   console.log('result', toolResult.data);
 
 }
+
+main();

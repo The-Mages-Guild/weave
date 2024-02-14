@@ -1,6 +1,11 @@
 {
   "name": "weave",
-  "module": "./src/lib/index.tsx",
+  "license": "MIT",
+  "description": "A React and TypeScript-JSX library for encapsulating natural language logic, enabling seamless integration of conversational interfaces within React applications.",
+  "version": "0.9.5",
+  "homepage": "https://github.com/The-Mages-Guild/weave",
+  "bugs": "https://github.com/The-Mages-Guild/weave/issues",
+  "module": "./src/lib/index.ts",
   "type": "module",
   "devDependencies": {
     "bun-types": "latest"
