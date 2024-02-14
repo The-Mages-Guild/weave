@@ -1,18 +1,42 @@
 {
-  "name": "weave",
+  "name": "@mageguild/weave",
+  "author": "The Mages' Guild",
   "license": "MIT",
-  "description": "A React and TypeScript-JSX library for encapsulating natural language logic, enabling seamless integration of conversational interfaces within React applications.",
+    "description": "A React and TypeScript-JSX library for encapsulating natural language logic, enabling seamless integration of conversational interfaces within React applications.",
   "version": "0.9.5",
   "homepage": "https://github.com/The-Mages-Guild/weave",
   "bugs": "https://github.com/The-Mages-Guild/weave/issues",
   "module": "./src/lib/index.ts",
+  "main": "./dist/lib/index.js",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "hhttps://github.com/The-Mages-Guild/weave.git"
+  },
   "devDependencies": {
     "bun-types": "latest"
   },
   "peerDependencies": {
     "typescript": "^5.3.3"
   },
+  "keywords": [
+    "react",
+    "typescript",
+    "natural language processing",
+    "conversational interfaces",
+    "chatbots",
+    "jsx",
+    "language models",
+    "openai",
+    "gpt",
+    "react library",
+    "typescript jsx",
+    "nlp",
+    "ai chat",
+    "conversational ui",
+    "dialogue systems",
+    "react components"
+  ],
   "dependencies": {
     "@types/he": "^1.2.3",
     "@types/react": "^18.2.55",

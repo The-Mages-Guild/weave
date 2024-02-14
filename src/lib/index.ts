@@ -20,3 +20,7 @@ export {
 
 // OpenAI
 export { OpenAI } from './openai';
+
+// OpenAI Service
+
+export { ChatModelsEnum, ChatResponseFormatEnum,ChatModels, ChatResponseFormat, getChatCompletion} from './openai/service';
