@@ -3,7 +3,7 @@
   "author": "The Mages' Guild",
   "license": "MIT",
   "description": "A React and TypeScript-JSX library for encapsulating natural language logic, enabling seamless integration of conversational interfaces within React applications.",
-  "version": "0.9.5",
+  "version": "0.9.6-alpha",
   "homepage": "https://github.com/The-Mages-Guild/weave",
   "bugs": "https://github.com/The-Mages-Guild/weave/issues",
   "module": "./src/lib/index.ts",

@@ -1,6 +1,11 @@
 #### Not yet ready for production
 
-# Table of Contents
+### this readme is out of date lmao sorry <3
+
+-----------------
+
+
+# Table of Contents 
 
 - [Table of Contents](#table-of-contents)
 - [Introduction](#introduction)
