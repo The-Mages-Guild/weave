@@ -7,3 +7,4 @@ export {
   findAllToolBoxes,
   getToolBox
 } from './toolbox'
+export { ChatCompletion, getChatCompletionRenderer } from './chat-completion';

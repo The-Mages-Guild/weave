@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Text } from '../text';
+import { Metadata } from '../metadata';
 
 export interface IToolBox {
   children: string[] | string | React.ReactNode | React.ReactNode[] | JSX.Element | JSX.Element[];
@@ -23,6 +24,7 @@ export const Tool = ({ toolName, trigger, command, params, execute }: ITool) => 
     params: params,
   }
   return(
+    <>
     <Text>
       === Tool: [{toolName}] ===
 
@@ -34,6 +36,8 @@ export const Tool = ({ toolName, trigger, command, params, execute }: ITool) => 
 
       === [/{toolName}] ===
     </Text>
+    </>
+    
   )
 }
 

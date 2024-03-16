@@ -2,7 +2,7 @@
   "name": "@mageguild/weave",
   "author": "The Mages' Guild",
   "license": "MIT",
-    "description": "A React and TypeScript-JSX library for encapsulating natural language logic, enabling seamless integration of conversational interfaces within React applications.",
+  "description": "A React and TypeScript-JSX library for encapsulating natural language logic, enabling seamless integration of conversational interfaces within React applications.",
   "version": "0.9.5",
   "homepage": "https://github.com/The-Mages-Guild/weave",
   "bugs": "https://github.com/The-Mages-Guild/weave/issues",
@@ -38,12 +38,15 @@
     "react components"
   ],
   "dependencies": {
+    "@huggingface/inference": "^2.6.4",
     "@types/he": "^1.2.3",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "he": "^1.2.0",
+    "jsx-xml": "^0.2.3",
     "openai": "^4.27.0",
     "react": "^18.2.0",
+    "react-ast": "^0.6.17",
     "react-dom": "^18.2.0",
     "typescript": "^5.3.3"
   }
