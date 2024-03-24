@@ -318,6 +318,15 @@ define("src/lib/core/chat-completion", ["require", "exports", "react/jsx-runtime
                     message
                 };
             }
+            return {
+                runTool: async () => {
+                    return {
+                        type: 'DEFAULT',
+                        result: message.content
+                    };
+                },
+                message
+            };
         };
     };
     exports.getChatCompletionRenderer = getChatCompletionRenderer;

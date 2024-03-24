@@ -63,7 +63,7 @@ declare module "src/lib/core/chat-completion" {
             result: any;
         }>;
         message: any;
-    } | undefined>;
+    }>;
 }
 declare module "src/lib/core/toolbox/index" {
     import * as React from 'react';

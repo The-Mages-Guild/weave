@@ -118,6 +118,15 @@ export const getChatCompletionRenderer = (chatCompletionCallback: (messages: any
         message
       }
     }
+    return {
+      runTool: async () => {
+        return {
+          type: 'DEFAULT',
+          result: message.content
+        }
+      },
+      message
+    }
   }
 
 }
