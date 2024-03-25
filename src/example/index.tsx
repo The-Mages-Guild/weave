@@ -44,7 +44,6 @@ async function getTree(dirPath: string, level = 0): Promise<string> {
 }
 
 const targetDir = './src/example/markdown/';
-getTree(targetDir).catch(console.error);
 
 class GPTWrapperWithTools {
   tools: {
@@ -81,6 +80,7 @@ class GPTWrapperWithTools {
   appendUserPromptJSX = (userPromptJSX: React.ReactNode) => {
     this.children.push(userPromptJSX)
   }
+
 
   getChatCompletion = async () => {
     const renderChatCompletion = getChatCompletionRenderer(async (messages: IMessage[]) => {
@@ -177,11 +177,6 @@ const main = async () => {
     ]
   )
 
-  // gptWrapper.appendUserPromptJSX(<User>
-  //   I want you to write a poem inside of the docs folder
-  // </User>)
-
-  // const message = await gptWrapper.getChatCompletion();
 
   function promptUser() {
     rl.question('Enter your command: ', async (command) => {
@@ -201,7 +196,6 @@ const main = async () => {
   // Start the CLI interaction
   promptUser();
 
-  // console.log({message});
 }
 
 main().catch(console.error);
