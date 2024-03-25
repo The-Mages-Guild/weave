@@ -1,5 +1,3 @@
-declare module "src/example/index" { }
-declare module "src/lib/execute" { }
 declare module "src/lib/utils/index" {
     export const getString: (component: React.ReactNode) => string;
 }
@@ -105,8 +103,18 @@ declare module "src/lib/core/index" {
 declare module "src/lib/index" {
     export { getString } from "src/lib/utils/index";
     export { Text, Markdown, System, User, Assistant, getChatCompletionRenderer, ChatCompletion } from "src/lib/core/index";
-    export { ChatModelsEnum, ChatResponseFormatEnum, ChatModels, ChatResponseFormat, getChatCompletion } from "src/lib/openai/service/index";
+    export { getChatCompletion } from "src/lib/openai/service/index";
+    export { IMessage } from "src/lib/core/messages/index";
+    export { IText } from "src/lib/core/text";
+    export { IMarkdown } from "src/lib/core/markdown";
+    export { ITool } from "src/lib/core/toolbox/index";
+    export { ChatModelsEnum, ChatResponseFormatEnum, ChatModels, ChatResponseFormat } from "src/lib/openai/service/index";
 }
+declare module "src/example/index" { }
+declare module "src/example/markdown/hello" {
+    export function sayHello(): void;
+}
+declare module "src/lib/execute" { }
 declare module "src/lib/core/dumb-character-count" {
     interface IDumbCharacterCount {
         limit?: number;

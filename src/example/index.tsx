@@ -1,82 +1,207 @@
+import * as React from 'react';
+import readline from 'readline';
+import { OpenAI } from 'openai';
+import {
+  System, 
+  User, 
+  Text,
+  Assistant, 
+  getChatCompletion,
+  ChatResponseFormatEnum,
+  ChatModelsEnum,
+  getChatCompletionRenderer,
+  ChatCompletion,
+  getString,
+  IMessage
+} from '../../dist/src/lib';
 
-// import * as React from 'react';
-// import { Tool, ToolBox,  } from '../lib-old/core';
-// import { execute } from '../lib-old';
-// import { ChatModelsEnum, ChatResponseFormatEnum } from '../lib-old/openai/service';
-// import { OpenAI } from '../lib-old/openai';
-// import { Assistant, System, User } from '../lib-old/core';
-// import { Text } from '../lib-old/core/text';
+import * as fs from 'fs-extra';
+import path from 'path';
 
-// const main = async () => {
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
+async function getTree(dirPath: string, level = 0): Promise<string> {
+  let result = '';
+  const indent = ' '.repeat(level * 2);
+  const files = await fs.readdir(dirPath);
+
+  for (const file of files) {
+    const filePath = path.join(dirPath, file);
+    const stat = await fs.stat(filePath);
+
+    if (stat.isDirectory()) {
+      result += `${indent}+ ${file}\n`;
+      result += await getTree(filePath, level + 1);
+    } else {
+      result += `${indent}- ${file}\n`;
+    }
+  }
+
+  return result;
+}
+
+const targetDir = './src/example/markdown/';
+getTree(targetDir).catch(console.error);
+
+class GPTWrapperWithTools {
+  tools: {
+    toolName: string;
+    trigger: string;
+    command: string;
+    params: Record<string, string>;
+    execute: (params: Record<string, string>) => Promise<any>;
+  }[] = []
+
+  children: React.ReactNode[] = []
+
+  getChildren = () => this.children
   
-//   type WEATHER = {}
-//   type SPORTS = {}
+  constructor(systemPromptJSX: React.ReactNode, tools: {
+    toolName: string;
+    trigger: string;
+    command: string;
+    params: Record<string, string>;
+    execute: (params: Record<string, string>) => Promise<any>;
+  }[] = []) {
+    this.tools = tools;
+    this.children = [
+      <System>{getString(systemPromptJSX)}</System>
+    ]
+  }
 
-//   type ToolBox = WEATHER | SPORTS;
+  getChatCompletionComponent = () => {
+    return <ChatCompletion tools={this.tools}>
+    {this.children}
+  </ChatCompletion>
+  }
 
-// const [content, toolResult] = await execute<ToolBox>(
-//     <OpenAI.ChatCompletions
-//       model={ChatModelsEnum.GPT_3P5_TURBO_0125}
-//       responseFormat={ChatResponseFormatEnum.JSON}
-//       apiKey={process.env.OPENAI_KEY}
-//     >
-//       <OpenAI.Messages>
-//         <System>
-//           <ToolBox>
-//             <Tool
-//               toolName="Fetch Weather Data"
-//               trigger="for when you need to fetch real-time weather data"
-//               command="FETCH_WEATHER_DATA"
-//               params={{ city: "string" }}
-//               execute={async ({ city }) => {
-//                 try {
-//                   const response = await fetch(`https://api.weatherapi.com/v1/current.json?q=${city}`);
-//                   const data = await response.json();
-//                   return `Current weather in ${city}: ${data.current.temp_c}°C, ${data.current.condition.text}`;
-//                 } catch (error) {
-//                   return `Failed to fetch weather data for ${city}`;
-//                 }
-//               }}
-//             />
-//           </ToolBox>
-//         </System>
-//         <User name="Bobbert">
-//           <Text>
-//             Hi my name is Bobbert and these are the tools you can use with me.
+  appendUserPromptJSX = (userPromptJSX: React.ReactNode) => {
+    this.children.push(userPromptJSX)
+  }
 
-//             Help me out here, can you respond with ONLY a variation of the following JSON object?
-//           </Text>
-//           <ToolBox>
-//             <Tool
-//               toolName="Check The Sports"
-//               trigger="when you need to check the sports points"
-//               command="CHECK_SPORTS"
-//               params={{
-//                 sportsLeague: "string",
-//                 teams: "string[]"
-//               }}
-//               execute={({sportsLeague, teams}) => {
-//                 return `Checking the sports in ${sportsLeague} for ${teams}`;
-//               }}
-//             />
-//           </ToolBox>
-//         </User>
-//         <Assistant>
-//           Thank you! I will use this tool.
-//         </Assistant>
-//         <User>
-//           <Text>
-//             What's the weather in Brampton right now? 
-//           </Text>
-//         </User>
-//       </OpenAI.Messages>
-//     </OpenAI.ChatCompletions>
-//   );
+  getChatCompletion = async () => {
+    const renderChatCompletion = getChatCompletionRenderer(async (messages: IMessage[]) => {
+      const chatCompletionMessages = messages as unknown as OpenAI.ChatCompletionMessage[];
+      return await getChatCompletion(process.env.OPENAI_KEY as string, chatCompletionMessages, ChatModelsEnum.GPT_3P5_TURBO_0125, ChatResponseFormatEnum.JSON);
+    });
+    const chatCompletionComponent = this.getChatCompletionComponent();
+    const chatCompletion = await renderChatCompletion(chatCompletionComponent);
+    const {runTool, message} = chatCompletion;
+    const {result} = await runTool();
+    this.appendUserPromptJSX(<Assistant>{result}</Assistant>);
+    return {
+      role: 'assistant',
+      content: result,
+    }
+  }
 
-//   console.log('content', content);
-//   console.log('result', toolResult.data);
+}
 
-// }
+const main = async () => {
 
-// main();
+  const tree = await getTree(targetDir);
+
+  const gptWrapper = new GPTWrapperWithTools(
+    <System>
+      # Your job is that of a librarian managing a repo of markdown text 
+
+      Below is a tree representation of the repo of MD/Markdown files: 
+
+      {tree}
+    </System>,
+    [
+      {
+        toolName: "Open a Markdown File",
+        trigger: "for when you need to open the README.md file",
+        command: "OPEN_MARKDOWN",
+        params: {filePath: 'string'},
+        execute: async ({filePath}) => {
+          try {
+            const fileContents = await fs.readFileSync(`${targetDir}${filePath}`, 'utf-8');
+            return `Here is the contents of the file: \n\n${fileContents}`;
+          } catch (error) {
+            return `There was an error opening the file: ${filePath}`;
+          }
+        }
+      },
+      {
+        toolName: "Render my repo tree",
+        trigger: "for when you or the user needs to look at the file system",
+        command: "RENDER_TREE",
+        params: {},
+        execute: async () => {
+          const renderedTree = await getTree(targetDir);
+          return renderedTree;
+        }
+      },
+      {
+        toolName: "Write a Markdown file to the repo",
+        trigger: "for when you or the user needs to write a Markdown file down to the repo",
+        command: "WRITE_MARKDOWN_FILE",
+        params: {
+          fileName: 'string',
+          fileContents: 'string',
+        },
+        execute: async ({
+          fileName, fileContents
+        }) => {
+          await fs.writeFileSync(`${targetDir}${fileName}`, fileContents);
+          return `Successfully wrote file: ${targetDir}${fileName}`;
+        }
+      },
+      {
+        toolName: "Ask the user a question",
+        trigger: "for when you need to ask the user a question",
+        command: "ASK_USER_QUESTION",
+        params: {
+          question: 'string'
+        },
+        execute: async ({question}) => {
+          return `${question}`;
+        }
+      },
+      {
+        toolName: "Respond to the user with a message",
+        trigger: "for when you need to talk to the user",
+        command: "TALK_TO_USER",
+        params: {
+          content: 'string'
+        },
+        execute: async ({content}) => {
+          return `${content}`;
+        }
+      }
+    ]
+  )
+
+  // gptWrapper.appendUserPromptJSX(<User>
+  //   I want you to write a poem inside of the docs folder
+  // </User>)
+
+  // const message = await gptWrapper.getChatCompletion();
+
+  function promptUser() {
+    rl.question('Enter your command: ', async (command) => {
+      // Here you can parse the command and interact with your GPTWrapperWithTools
+      // For simplicity, let's just pass the command directly
+      gptWrapper.appendUserPromptJSX(<User>{command}</User>);
+
+      const message = await gptWrapper.getChatCompletion();
+
+      console.log('Assistant says:', message.content);
+
+      // Continue prompting the user after each interaction
+      promptUser();
+    });
+  }
+
+  // Start the CLI interaction
+  promptUser();
+
+  // console.log({message});
+}
+
+main().catch(console.error);

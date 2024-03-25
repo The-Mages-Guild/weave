@@ -10,7 +10,6 @@
     "composite": true,
     "strict": true,
     "downlevelIteration": true,
-    "declaration": true,
     "skipLibCheck": true,
     "jsx": "react-jsx",
     "outDir": "./dist/",

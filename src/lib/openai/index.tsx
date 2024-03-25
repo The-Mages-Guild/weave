@@ -1,4 +1,4 @@
-import { ChatModels, ChatResponseFormatEnum } from "./service";
+import { ChatModels, ChatModelsEnum, ChatResponseFormat, ChatResponseFormatEnum } from "./service";
 
 
 //** Open AI */

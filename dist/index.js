@@ -1,157 +1,3 @@
-// import * as React from 'react';
-// import { Tool, ToolBox,  } from '../lib-old/core';
-// import { execute } from '../lib-old';
-// import { ChatModelsEnum, ChatResponseFormatEnum } from '../lib-old/openai/service';
-// import { OpenAI } from '../lib-old/openai';
-// import { Assistant, System, User } from '../lib-old/core';
-// import { Text } from '../lib-old/core/text';
-define("src/example/index", ["require", "exports"], function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-});
-// const main = async () => {
-//   type WEATHER = {}
-//   type SPORTS = {}
-//   type ToolBox = WEATHER | SPORTS;
-// const [content, toolResult] = await execute<ToolBox>(
-//     <OpenAI.ChatCompletions
-//       model={ChatModelsEnum.GPT_3P5_TURBO_0125}
-//       responseFormat={ChatResponseFormatEnum.JSON}
-//       apiKey={process.env.OPENAI_KEY}
-//     >
-//       <OpenAI.Messages>
-//         <System>
-//           <ToolBox>
-//             <Tool
-//               toolName="Fetch Weather Data"
-//               trigger="for when you need to fetch real-time weather data"
-//               command="FETCH_WEATHER_DATA"
-//               params={{ city: "string" }}
-//               execute={async ({ city }) => {
-//                 try {
-//                   const response = await fetch(`https://api.weatherapi.com/v1/current.json?q=${city}`);
-//                   const data = await response.json();
-//                   return `Current weather in ${city}: ${data.current.temp_c}°C, ${data.current.condition.text}`;
-//                 } catch (error) {
-//                   return `Failed to fetch weather data for ${city}`;
-//                 }
-//               }}
-//             />
-//           </ToolBox>
-//         </System>
-//         <User name="Bobbert">
-//           <Text>
-//             Hi my name is Bobbert and these are the tools you can use with me.
-//             Help me out here, can you respond with ONLY a variation of the following JSON object?
-//           </Text>
-//           <ToolBox>
-//             <Tool
-//               toolName="Check The Sports"
-//               trigger="when you need to check the sports points"
-//               command="CHECK_SPORTS"
-//               params={{
-//                 sportsLeague: "string",
-//                 teams: "string[]"
-//               }}
-//               execute={({sportsLeague, teams}) => {
-//                 return `Checking the sports in ${sportsLeague} for ${teams}`;
-//               }}
-//             />
-//           </ToolBox>
-//         </User>
-//         <Assistant>
-//           Thank you! I will use this tool.
-//         </Assistant>
-//         <User>
-//           <Text>
-//             What's the weather in Brampton right now? 
-//           </Text>
-//         </User>
-//       </OpenAI.Messages>
-//     </OpenAI.ChatCompletions>
-//   );
-//   console.log('content', content);
-//   console.log('result', toolResult.data);
-// }
-// main();
-// import * as React from 'react';
-define("src/lib/execute", ["require", "exports"], function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-});
-// import { OpenAI } from "../lib-old/openai";
-// import { getString } from "../lib-old/utils";
-// import { ChatModels, ChatModelsEnum, ChatResponseFormat, ChatResponseFormatEnum, getChatCompletion } from "./openai/service";
-// import { findAllToolBoxes, getMessages, getToolBox } from './core';
-// type JSXtoJSONRepresentation = {
-//   model: ChatModels,
-//   responseFormat: ChatResponseFormat,
-//   toolBox: {[key: string]: ((...params: any) => any) | ((params?: any) => any)},
-//   messages: {
-//     role: string,
-//     content: string,
-//     name?: string,
-//   }[],
-// }
-// export async function execute<T>(APIComponent: React.ReactElement): Promise<[string , { data: T | null }]> {
-//   // Throw error if the component is not OpenAI.ChatCompletions and does not have OpenAI.Messages as a child
-//   if (APIComponent.type !== OpenAI.ChatCompletions) throw new Error('The component must be OpenAI.ChatCompletions');
-//   if (APIComponent.props.children.type !== OpenAI.Messages) throw new Error('The child of OpenAI.ChatCompletions must be OpenAI.Messages');
-//   const apiComponent = APIComponent;
-//   const ToolBoxes = findAllToolBoxes(apiComponent);
-//   const toolBox: JSXtoJSONRepresentation['toolBox'] = ToolBoxes.map(tool => {
-//     return getToolBox(tool);
-//   })
-//   .reduce((prevValue, currValue) => {
-//     return {
-//       ...prevValue,
-//       ...currValue
-//     }    
-//   }, {});
-//   // Get name of Model from OpenAI.ChatCompletions
-//   const model = apiComponent.type === OpenAI.ChatCompletions ? apiComponent.props.model : ChatModelsEnum.GPT_3P5_TURBO;
-//   const responseFormat = apiComponent.props.responseFormat
-//   const apiKey = apiComponent.props.apiKey;
-//   // Get Messages
-//   const Messages = apiComponent.props.children;
-//   const messages = getMessages(Messages);
-//   const jsonRepresentation: JSXtoJSONRepresentation = {
-//     model,
-//     responseFormat,
-//     toolBox,
-//     messages, 
-//   };
-//   const completion = await getChatCompletion(apiKey, messages, model, responseFormat);
-//   const runTool = (toolName: string, params: any) => {
-//     // if toolBox is not null, then run the tool
-//     const toolExecutionFunction = toolBox[toolName]; // This comes from the `execute` prop inside of the <Tool /> component
-//     if (toolBox[toolName]) return toolExecutionFunction(params);
-//   };
-//   const content = completion.choices[0].message.content ?? '';
-//   // If content can be parsed into JSON, then return the JSON object, else return the content
-//   try {
-//     // Parse the content into JSON
-//     const parsedContent = JSON.parse(content);
-//     // Check if the parsed content has a corresponding function key in the toolBox
-//     if (toolBox[parsedContent.command]) {
-//       // If it does, then return runTool
-//       const result = await runTool(parsedContent.command, parsedContent.params);
-//       return [
-//         parsedContent.command as string,
-//         { data: result as T }
-//       ];
-//     }
-//   } catch (error) {
-//     return [
-//       content,
-//       { data: null }
-//     ];
-//   }
-//   return [
-//     content,
-//     { data: null }
-//   ];
-// };
 define("src/lib/utils/index", ["require", "exports", "react-dom/server", "he"], function (require, exports, server_1, he_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -464,10 +310,10 @@ define("src/lib/core/index", ["require", "exports", "src/lib/core/text", "src/li
 });
 // Execute
 // export { execute } from './execute';
-define("src/lib/index", ["require", "exports", "src/lib/utils/index", "src/lib/core/index", "src/lib/openai/service/index"], function (require, exports, utils_3, core_1, service_1) {
+define("src/lib/index", ["require", "exports", "src/lib/utils/index", "src/lib/core/index", "src/lib/openai/service/index", "src/lib/openai/service/index"], function (require, exports, utils_3, core_1, service_1, service_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.getChatCompletion = exports.ChatResponseFormatEnum = exports.ChatModelsEnum = exports.ChatCompletion = exports.getChatCompletionRenderer = exports.Assistant = exports.User = exports.System = exports.Markdown = exports.Text = exports.getString = void 0;
+    exports.ChatResponseFormatEnum = exports.ChatModelsEnum = exports.getChatCompletion = exports.ChatCompletion = exports.getChatCompletionRenderer = exports.Assistant = exports.User = exports.System = exports.Markdown = exports.Text = exports.getString = void 0;
     Object.defineProperty(exports, "getString", { enumerable: true, get: function () { return utils_3.getString; } });
     Object.defineProperty(exports, "Text", { enumerable: true, get: function () { return core_1.Text; } });
     Object.defineProperty(exports, "Markdown", { enumerable: true, get: function () { return core_1.Markdown; } });
@@ -482,11 +328,229 @@ define("src/lib/index", ["require", "exports", "src/lib/utils/index", "src/lib/c
     // getToolBox,
     Object.defineProperty(exports, "getChatCompletionRenderer", { enumerable: true, get: function () { return core_1.getChatCompletionRenderer; } });
     Object.defineProperty(exports, "ChatCompletion", { enumerable: true, get: function () { return core_1.ChatCompletion; } });
-    Object.defineProperty(exports, "ChatModelsEnum", { enumerable: true, get: function () { return service_1.ChatModelsEnum; } });
-    Object.defineProperty(exports, "ChatResponseFormatEnum", { enumerable: true, get: function () { return service_1.ChatResponseFormatEnum; } });
     Object.defineProperty(exports, "getChatCompletion", { enumerable: true, get: function () { return service_1.getChatCompletion; } });
+    Object.defineProperty(exports, "ChatModelsEnum", { enumerable: true, get: function () { return service_2.ChatModelsEnum; } });
+    Object.defineProperty(exports, "ChatResponseFormatEnum", { enumerable: true, get: function () { return service_2.ChatResponseFormatEnum; } });
 });
-define("src/lib/core/dumb-character-count", ["require", "exports", "react/jsx-runtime"], function (require, exports, jsx_runtime_6) {
+define("src/example/index", ["require", "exports", "react/jsx-runtime", "readline", "src/lib/index", "fs-extra", "path"], function (require, exports, jsx_runtime_6, readline_1, lib_1, fs, path_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    const rl = readline_1.default.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
+    async function getTree(dirPath, level = 0) {
+        let result = '';
+        const indent = ' '.repeat(level * 2);
+        const files = await fs.readdir(dirPath);
+        for (const file of files) {
+            const filePath = path_1.default.join(dirPath, file);
+            const stat = await fs.stat(filePath);
+            if (stat.isDirectory()) {
+                result += `${indent}+ ${file}\n`;
+                result += await getTree(filePath, level + 1);
+            }
+            else {
+                result += `${indent}- ${file}\n`;
+            }
+        }
+        return result;
+    }
+    const targetDir = './src/example/markdown/';
+    getTree(targetDir).catch(console.error);
+    class GPTWrapperWithTools {
+        tools = [];
+        children = [];
+        getChildren = () => this.children;
+        constructor(systemPromptJSX, tools = []) {
+            this.tools = tools;
+            console.log({ systemPromptJSX });
+            this.children = [
+                (0, jsx_runtime_6.jsx)(lib_1.System, { children: (0, lib_1.getString)(systemPromptJSX) })
+            ];
+            console.log({ children: this.children });
+        }
+        getChatCompletionComponent = () => {
+            return (0, jsx_runtime_6.jsx)(lib_1.ChatCompletion, { tools: this.tools, children: this.children });
+        };
+        appendUserPromptJSX = (userPromptJSX) => {
+            this.children.push(userPromptJSX);
+        };
+        getChatCompletion = async () => {
+            const renderChatCompletion = (0, lib_1.getChatCompletionRenderer)(async (messages) => {
+                const chatCompletionMessages = messages;
+                return await (0, lib_1.getChatCompletion)(process.env.OPENAI_KEY, chatCompletionMessages, lib_1.ChatModelsEnum.GPT_3P5_TURBO_0125, lib_1.ChatResponseFormatEnum.JSON);
+            });
+            const chatCompletionComponent = this.getChatCompletionComponent();
+            const chatCompletion = await renderChatCompletion(chatCompletionComponent);
+            const { runTool, message } = chatCompletion;
+            const { result } = await runTool();
+            this.appendUserPromptJSX((0, jsx_runtime_6.jsx)(lib_1.Assistant, { children: result }));
+            return {
+                role: 'assistant',
+                content: result,
+            };
+        };
+    }
+    const main = async () => {
+        const tree = await getTree(targetDir);
+        const gptWrapper = new GPTWrapperWithTools((0, jsx_runtime_6.jsxs)(lib_1.System, { children: ["# Your job is that of a librarian managing a repo of markdown text Below is a tree representation of the repo of MD/Markdown files:", tree] }), [
+            {
+                toolName: "Open a Markdown File",
+                trigger: "for when you need to open the README.md file",
+                command: "OPEN_MARKDOWN",
+                params: { filePath: 'string' },
+                execute: async ({ filePath }) => {
+                    try {
+                        const fileContents = await fs.readFileSync(`${targetDir}${filePath}`, 'utf-8');
+                        return `Here is the contents of the file: \n\n${fileContents}`;
+                    }
+                    catch (error) {
+                        return `There was an error opening the file: ${filePath}`;
+                    }
+                }
+            },
+            {
+                toolName: "Render my repo tree",
+                trigger: "for when you or the user needs to look at the file system",
+                command: "RENDER_TREE",
+                params: {},
+                execute: async () => {
+                    const renderedTree = await getTree(targetDir);
+                    return renderedTree;
+                }
+            },
+            {
+                toolName: "Write a Markdown file to the repo",
+                trigger: "for when you or the user needs to write a Markdown file down to the repo",
+                command: "WRITE_MARKDOWN_FILE",
+                params: {
+                    fileName: 'string',
+                    fileContents: 'string',
+                },
+                execute: async ({ fileName, fileContents }) => {
+                    await fs.writeFileSync(`${targetDir}${fileName}`, fileContents);
+                    return `Successfully wrote file: ${targetDir}${fileName}`;
+                }
+            },
+            {
+                toolName: "Ask the user a question",
+                trigger: "for when you need to ask the user a question",
+                command: "ASK_USER_QUESTION",
+                params: {
+                    question: 'string'
+                },
+                execute: async ({ question }) => {
+                    return `${question}`;
+                }
+            }
+        ]);
+        // gptWrapper.appendUserPromptJSX(<User>
+        //   I want you to write a poem inside of the docs folder
+        // </User>)
+        // const message = await gptWrapper.getChatCompletion();
+        function promptUser() {
+            rl.question('Enter your command: ', async (command) => {
+                // Here you can parse the command and interact with your GPTWrapperWithTools
+                // For simplicity, let's just pass the command directly
+                gptWrapper.appendUserPromptJSX((0, jsx_runtime_6.jsx)(lib_1.User, { children: command }));
+                const message = await gptWrapper.getChatCompletion();
+                console.log('Assistant says:', message.content);
+                // Continue prompting the user after each interaction
+                promptUser();
+            });
+        }
+        // Start the CLI interaction
+        promptUser();
+        // console.log({message});
+    };
+    main().catch(console.error);
+});
+define("src/example/markdown/hello", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    const sayHello = () => console.log('Hello, world!');
+    module.exports = { sayHello };
+});
+// import * as React from 'react';
+define("src/lib/execute", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+});
+// import { OpenAI } from "../lib-old/openai";
+// import { getString } from "../lib-old/utils";
+// import { ChatModels, ChatModelsEnum, ChatResponseFormat, ChatResponseFormatEnum, getChatCompletion } from "./openai/service";
+// import { findAllToolBoxes, getMessages, getToolBox } from './core';
+// type JSXtoJSONRepresentation = {
+//   model: ChatModels,
+//   responseFormat: ChatResponseFormat,
+//   toolBox: {[key: string]: ((...params: any) => any) | ((params?: any) => any)},
+//   messages: {
+//     role: string,
+//     content: string,
+//     name?: string,
+//   }[],
+// }
+// export async function execute<T>(APIComponent: React.ReactElement): Promise<[string , { data: T | null }]> {
+//   // Throw error if the component is not OpenAI.ChatCompletions and does not have OpenAI.Messages as a child
+//   if (APIComponent.type !== OpenAI.ChatCompletions) throw new Error('The component must be OpenAI.ChatCompletions');
+//   if (APIComponent.props.children.type !== OpenAI.Messages) throw new Error('The child of OpenAI.ChatCompletions must be OpenAI.Messages');
+//   const apiComponent = APIComponent;
+//   const ToolBoxes = findAllToolBoxes(apiComponent);
+//   const toolBox: JSXtoJSONRepresentation['toolBox'] = ToolBoxes.map(tool => {
+//     return getToolBox(tool);
+//   })
+//   .reduce((prevValue, currValue) => {
+//     return {
+//       ...prevValue,
+//       ...currValue
+//     }    
+//   }, {});
+//   // Get name of Model from OpenAI.ChatCompletions
+//   const model = apiComponent.type === OpenAI.ChatCompletions ? apiComponent.props.model : ChatModelsEnum.GPT_3P5_TURBO;
+//   const responseFormat = apiComponent.props.responseFormat
+//   const apiKey = apiComponent.props.apiKey;
+//   // Get Messages
+//   const Messages = apiComponent.props.children;
+//   const messages = getMessages(Messages);
+//   const jsonRepresentation: JSXtoJSONRepresentation = {
+//     model,
+//     responseFormat,
+//     toolBox,
+//     messages, 
+//   };
+//   const completion = await getChatCompletion(apiKey, messages, model, responseFormat);
+//   const runTool = (toolName: string, params: any) => {
+//     // if toolBox is not null, then run the tool
+//     const toolExecutionFunction = toolBox[toolName]; // This comes from the `execute` prop inside of the <Tool /> component
+//     if (toolBox[toolName]) return toolExecutionFunction(params);
+//   };
+//   const content = completion.choices[0].message.content ?? '';
+//   // If content can be parsed into JSON, then return the JSON object, else return the content
+//   try {
+//     // Parse the content into JSON
+//     const parsedContent = JSON.parse(content);
+//     // Check if the parsed content has a corresponding function key in the toolBox
+//     if (toolBox[parsedContent.command]) {
+//       // If it does, then return runTool
+//       const result = await runTool(parsedContent.command, parsedContent.params);
+//       return [
+//         parsedContent.command as string,
+//         { data: result as T }
+//       ];
+//     }
+//   } catch (error) {
+//     return [
+//       content,
+//       { data: null }
+//     ];
+//   }
+//   return [
+//     content,
+//     { data: null }
+//   ];
+// };
+define("src/lib/core/dumb-character-count", ["require", "exports", "react/jsx-runtime"], function (require, exports, jsx_runtime_7) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.DumbCharacterCount = void 0;
@@ -494,7 +558,7 @@ define("src/lib/core/dumb-character-count", ["require", "exports", "react/jsx-ru
         return limit === undefined ?
             children :
             children.length > limit ?
-                (0, jsx_runtime_6.jsx)(jsx_runtime_6.Fragment, { children: `${children}` }) :
+                (0, jsx_runtime_7.jsx)(jsx_runtime_7.Fragment, { children: `${children}` }) :
                 null;
     };
     exports.DumbCharacterCount = DumbCharacterCount;
@@ -645,12 +709,12 @@ define("src/lib/huggingface/index", ["require", "exports", "@huggingface/inferen
     }
     exports.executeHuggingfaceModel = executeHuggingfaceModel;
 });
-define("src/lib/core/weave", ["require", "exports", "react/jsx-runtime", "src/lib/huggingface/index", "src/lib/core/types/models.enum", "src/lib/core/metadata"], function (require, exports, jsx_runtime_7, huggingface_1, models_enum_2, metadata_1) {
+define("src/lib/core/weave", ["require", "exports", "react/jsx-runtime", "src/lib/huggingface/index", "src/lib/core/types/models.enum", "src/lib/core/metadata"], function (require, exports, jsx_runtime_8, huggingface_1, models_enum_2, metadata_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ExampleUsage = exports.ImageToText = exports.TextToImage = exports.ImageSegmentation = exports.ObjectDetection = exports.ImageClassification = exports.TextToSpeech = exports.AudioClassification = exports.AutomaticSpeechRecognition = exports.FeatureExtraction = exports.SentenceSimilarity = exports.Conversational = exports.ZeroShotClassification = exports.Translation = exports.TokenClassification = exports.TextGenerationStream = exports.TextGeneration = exports.TextClassification = exports.TableQuestionAnswering = exports.QuestionAnswering = exports.FillMask = exports.Summarization = exports.CoreModelConfig = void 0;
     const CoreModelConfig = ({ params, execute }) => {
-        return ((0, jsx_runtime_7.jsx)(jsx_runtime_7.Fragment, { children: (0, jsx_runtime_7.jsx)(metadata_1.Metadata, { model: params.model, config: params.config, execute: execute }, params.model) }));
+        return ((0, jsx_runtime_8.jsx)(jsx_runtime_8.Fragment, { children: (0, jsx_runtime_8.jsx)(metadata_1.Metadata, { model: params.model, config: params.config, execute: execute }, params.model) }));
     };
     exports.CoreModelConfig = CoreModelConfig;
     const createModelComponent = (defaultModel) => {
@@ -658,7 +722,7 @@ define("src/lib/core/weave", ["require", "exports", "react/jsx-runtime", "src/li
             const execute = async (configuration) => {
                 return await (0, huggingface_1.executeHuggingfaceModel)(defaultModel, configuration);
             };
-            return ((0, jsx_runtime_7.jsx)(exports.CoreModelConfig, { params: {
+            return ((0, jsx_runtime_8.jsx)(exports.CoreModelConfig, { params: {
                     model: defaultModel,
                     config
                 }, execute: execute }));
@@ -686,22 +750,22 @@ define("src/lib/core/weave", ["require", "exports", "react/jsx-runtime", "src/li
     exports.TextToImage = createModelComponent(models_enum_2.Models.STABILITYAI_STABLE_DIFFUSION_2);
     exports.ImageToText = createModelComponent(models_enum_2.Models.NLPCONNECT_VIT_GPT2_IMAGE_CAPTIONING);
     const ExampleUsage = () => {
-        return ((0, jsx_runtime_7.jsx)(jsx_runtime_7.Fragment, { children: (0, jsx_runtime_7.jsx)(exports.FillMask, { config: {
+        return ((0, jsx_runtime_8.jsx)(jsx_runtime_8.Fragment, { children: (0, jsx_runtime_8.jsx)(exports.FillMask, { config: {
                     inputs: 'The quick brown [MASK] jumps over the lazy dog',
                 } }) }));
     };
     exports.ExampleUsage = ExampleUsage;
 });
-define("src/lib/openai/index", ["require", "exports", "react/jsx-runtime"], function (require, exports, jsx_runtime_8) {
+define("src/lib/openai/index", ["require", "exports", "react/jsx-runtime"], function (require, exports, jsx_runtime_9) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.OpenAI = void 0;
     exports.OpenAI = {
         ChatCompletions: ({ apiKey, model, responseFormat, children }) => {
-            return ((0, jsx_runtime_8.jsx)(jsx_runtime_8.Fragment, { children: children }));
+            return ((0, jsx_runtime_9.jsx)(jsx_runtime_9.Fragment, { children: children }));
         },
         Messages: ({ children }) => {
-            return ((0, jsx_runtime_8.jsx)(jsx_runtime_8.Fragment, { children: children }));
+            return ((0, jsx_runtime_9.jsx)(jsx_runtime_9.Fragment, { children: children }));
         }
     };
 });

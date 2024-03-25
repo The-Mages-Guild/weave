@@ -3,7 +3,7 @@ export { Markdown } from './markdown'
 export { System, User, Assistant, getMessageRole, getMessages } from './messages'
 export { 
   ToolBox,
-  Tool,  
+  Tool,
   findAllToolBoxes,
   getToolBox
 } from './toolbox'

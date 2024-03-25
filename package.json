@@ -14,6 +14,9 @@
     "url": "hhttps://github.com/The-Mages-Guild/weave.git"
   },
   "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/readline-sync": "^1.4.8",
+    "@types/yargs": "^17.0.32",
     "bun-types": "latest"
   },
   "peerDependencies": {
@@ -42,12 +45,15 @@
     "@types/he": "^1.2.3",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
+    "fs-extra": "^11.2.0",
     "he": "^1.2.0",
     "jsx-xml": "^0.2.3",
     "openai": "^4.27.0",
     "react": "^18.2.0",
     "react-ast": "^0.6.17",
     "react-dom": "^18.2.0",
-    "typescript": "^5.3.3"
+    "readline-sync": "^1.4.10",
+    "typescript": "^5.3.3",
+    "yargs": "^17.7.2"
   }
 }
